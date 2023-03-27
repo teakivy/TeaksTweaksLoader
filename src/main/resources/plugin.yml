@@ -1,0 +1,9 @@
+name: TeaksTweaksLoader
+version: '${project.version}'
+main: me.teakivy.teakstweaksloader.TeaksTweaksLoader
+api-version: 1.19
+prefix: TTL
+load: STARTUP
+loadbefore: [ TeaksTweaks ]
+authors: [ TeakIvy ]
+description: Plugin Auto Updater for Teak's Tweaks
