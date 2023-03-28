@@ -29,22 +29,8 @@ public class Logger {
 
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&6&lTTL&r&8] " + prefix + " &f" + message));
 
-        Player executor = getExecutor();
-        if (executor != null) {
-            executor.sendMessage(ChatColor.GREEN + message);
-        }
+        Bukkit.getOnlinePlayers().stream().filter(player -> player.hasPermission("teakstweaks.manage")).forEach(player -> player.sendMessage(ChatColor.YELLOW + message));
     }
 
     public enum LogLevel { ERROR, WARNING, INFO, SUCCESS, OUTLINE }
-
-    public static Player getExecutor() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.hasPermission("teakstweaks.manage")) {
-                return player;
-            }
-        }
-
-        return null;
-    }
-
 }
