@@ -1,6 +1,6 @@
 package me.teakivy.teakstweaksloader;
 
-import me.teakivy.teakstweaksloader.util.FileDownloader;
+import me.teakivy.teakstweaksloader.util.FileUtils;
 import me.teakivy.teakstweaksloader.util.Logger;
 import me.teakivy.teakstweaksloader.util.PluginUnloader;
 import org.bukkit.Bukkit;
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public final class TeaksTweaksLoader extends JavaPlugin {
 
-    private final String dlUrl = "https://api.spiget.org/v2/resources/94021/download";
+    private String dlUrl = "https://api.spiget.org/v2/resources/94021/download";
 
     @Override
     public synchronized void onEnable() {
@@ -25,15 +25,20 @@ public final class TeaksTweaksLoader extends JavaPlugin {
             PluginUnloader.unload(plugin);
         }
 
-        File file = new File("plugins/TeaksTweaks.jar");
-        if (file.exists()) {
-            Logger.log(Logger.LogLevel.INFO, "Deleting TeaksTweaks.jar...");
-            file.delete();
+        Logger.log(Logger.LogLevel.INFO, "Deleting TeaksTweaks.jar...");
+        FileUtils.deleteTeaksTweaksPluginFiles();
+
+        if (FileUtils.isDevUpdate()) {
+            Logger.log(Logger.LogLevel.INFO, "Loading Development Branch...");
+            dlUrl = "https://github.com/teakivy/TeaksTweaksLoader/releases/download/teakstweaksdev/TeaksTweaks.-.DEV.jar";
+
+            FileUtils.deleteDevLoader();
         }
 
         try {
+
             Logger.log(Logger.LogLevel.INFO, "Downloading TeaksTweaks.jar...");
-            FileDownloader.downloadFile(dlUrl, "plugins/TeaksTweaks.jar");
+            FileUtils.downloadFile(dlUrl, "plugins/TeaksTweaks.jar");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
